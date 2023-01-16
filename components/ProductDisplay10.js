@@ -1,5 +1,4 @@
-app.component('product-display', {
-  props: {
+app.component('product-display', {  props: {
     premium: {
       type: Boolean,
       required: true
@@ -19,6 +18,7 @@ app.component('product-display', {
         <p v-else>Out of Stock</p>
 
         <p>Shipping: {{ shipping }}</p>
+
         <ul>
           <li v-for="detail in details">{{ detail }}</li>
         </ul>
@@ -38,7 +38,13 @@ app.component('product-display', {
           v-on:click="addToCart">
           Add to Cart
         </button>
-
+        <button 
+          class="button" 
+          :class="{ disabledButton: !inStock }" 
+          :disabled="!inStock" 
+          v-on:click="outOfCart">
+          Out of Cart
+        </button>
       </div>
     </div>
   </div>`,
@@ -56,10 +62,13 @@ app.component('product-display', {
   },
   methods: {
       addToCart() {
-          this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
+        this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
+      },
+      outOfCart() {
+        this.$emit('out-of-cart', this.variants[this.selectedVariant].id)
       },
       updateVariant(index) {
-          this.selectedVariant = index
+            this.selectedVariant = index
       }
   },
   computed: {
@@ -78,5 +87,5 @@ app.component('product-display', {
         }
         return 2.99
       }
-  }
+    }
 })
